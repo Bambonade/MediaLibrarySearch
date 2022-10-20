@@ -1,6 +1,7 @@
 ﻿using System;
 using NLog.Web;
 using System.IO;
+using System.Linq;
 
 namespace MediaLibrarySearch
 {
@@ -68,7 +69,13 @@ namespace MediaLibrarySearch
                     movieFile.AddMovie(movie);
                 } else if(choice == "2") foreach(Movie m in movieFile.Movies) Console.WriteLine(m.Display());
                 else if(choice == "3"){
+                    Console.WriteLine("Enter a movie title");
+                    string find = Console.ReadLine();
+                    int movieCount = movieFile.Movies.Where(m => m.title.Contains(find, StringComparison.OrdinalIgnoreCase)).Count();
+                    Console.WriteLine($"There are {movieCount} movies with \"{find}\" in the title");
 
+                    var movieSearch = movieFile.Movies.Where(m =>m.title.Contains(find, StringComparison.OrdinalIgnoreCase));
+                    foreach(Movie m in movieSearch) Console.WriteLine(m.Display());
                 }
             }while (choice == "1" || choice =="2" || choice == "3");
             logger.Info("Program ended");
